@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    network.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    Sun Jun 25 00:38:02 2023
+  * @date    Thu Jul  6 16:00:33 2023
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -35,14 +35,14 @@
 #define AI_NET_OBJ_INSTANCE g_network
  
 #undef AI_NETWORK_MODEL_SIGNATURE
-#define AI_NETWORK_MODEL_SIGNATURE     "515d3dd2990aa2ebc601e2bb894384e8"
+#define AI_NETWORK_MODEL_SIGNATURE     "7ea75f9d262f8de5d362c6d764c88c4c"
 
 #ifndef AI_TOOLS_REVISION_ID
 #define AI_TOOLS_REVISION_ID     ""
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "Sun Jun 25 00:38:02 2023"
+#define AI_TOOLS_DATE_TIME   "Thu Jul  6 16:00:33 2023"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
@@ -59,11 +59,11 @@ static ai_ptr g_network_weights_map[1] = AI_C_ARRAY_INIT;
 /* Array#0 */
 AI_ARRAY_OBJ_DECLARE(
   L1_dense_output_array, AI_ARRAY_FORMAT_FLOAT,
-  NULL, NULL, 400, AI_STATIC)
+  NULL, NULL, 5, AI_STATIC)
 /* Array#1 */
 AI_ARRAY_OBJ_DECLARE(
   L1_output_array, AI_ARRAY_FORMAT_FLOAT,
-  NULL, NULL, 400, AI_STATIC)
+  NULL, NULL, 5, AI_STATIC)
 /* Array#2 */
 AI_ARRAY_OBJ_DECLARE(
   L5_dense_output_array, AI_ARRAY_FORMAT_FLOAT,
@@ -74,16 +74,16 @@ AI_ARRAY_OBJ_DECLARE(
   NULL, NULL, 1, AI_STATIC)
 /* Array#4 */
 AI_ARRAY_OBJ_DECLARE(
-  L1_dense_weights_array, AI_ARRAY_FORMAT_LUT8_FLOAT,
-  NULL, NULL, 2400, AI_STATIC)
+  L1_dense_weights_array, AI_ARRAY_FORMAT_FLOAT,
+  NULL, NULL, 30, AI_STATIC)
 /* Array#5 */
 AI_ARRAY_OBJ_DECLARE(
   L1_dense_bias_array, AI_ARRAY_FORMAT_FLOAT,
-  NULL, NULL, 400, AI_STATIC)
+  NULL, NULL, 5, AI_STATIC)
 /* Array#6 */
 AI_ARRAY_OBJ_DECLARE(
   L5_dense_weights_array, AI_ARRAY_FORMAT_FLOAT,
-  NULL, NULL, 400, AI_STATIC)
+  NULL, NULL, 5, AI_STATIC)
 /* Array#7 */
 AI_ARRAY_OBJ_DECLARE(
   L5_dense_bias_array, AI_ARRAY_FORMAT_FLOAT,
@@ -97,14 +97,14 @@ AI_ARRAY_OBJ_DECLARE(
 AI_TENSOR_OBJ_DECLARE(
   L1_dense_output, AI_STATIC,
   0, 0x0,
-  AI_SHAPE_INIT(4, 1, 400, 1, 1), AI_STRIDE_INIT(4, 4, 4, 1600, 1600),
+  AI_SHAPE_INIT(4, 1, 5, 1, 1), AI_STRIDE_INIT(4, 4, 4, 20, 20),
   1, &L1_dense_output_array, NULL)
 
 /* Tensor #1 */
 AI_TENSOR_OBJ_DECLARE(
   L1_output, AI_STATIC,
   1, 0x0,
-  AI_SHAPE_INIT(4, 1, 400, 1, 1), AI_STRIDE_INIT(4, 4, 4, 1600, 1600),
+  AI_SHAPE_INIT(4, 1, 5, 1, 1), AI_STRIDE_INIT(4, 4, 4, 20, 20),
   1, &L1_output_array, NULL)
 
 /* Tensor #2 */
@@ -125,21 +125,21 @@ AI_TENSOR_OBJ_DECLARE(
 AI_TENSOR_OBJ_DECLARE(
   L1_dense_weights, AI_STATIC,
   4, 0x0,
-  AI_SHAPE_INIT(4, 6, 400, 1, 1), AI_STRIDE_INIT(4, 1, 6, 2400, 2400),
+  AI_SHAPE_INIT(4, 6, 5, 1, 1), AI_STRIDE_INIT(4, 4, 24, 120, 120),
   1, &L1_dense_weights_array, NULL)
 
 /* Tensor #5 */
 AI_TENSOR_OBJ_DECLARE(
   L1_dense_bias, AI_STATIC,
   5, 0x0,
-  AI_SHAPE_INIT(4, 1, 400, 1, 1), AI_STRIDE_INIT(4, 4, 4, 1600, 1600),
+  AI_SHAPE_INIT(4, 1, 5, 1, 1), AI_STRIDE_INIT(4, 4, 4, 20, 20),
   1, &L1_dense_bias_array, NULL)
 
 /* Tensor #6 */
 AI_TENSOR_OBJ_DECLARE(
   L5_dense_weights, AI_STATIC,
   6, 0x0,
-  AI_SHAPE_INIT(4, 400, 1, 1, 1), AI_STRIDE_INIT(4, 4, 1600, 1600, 1600),
+  AI_SHAPE_INIT(4, 5, 1, 1, 1), AI_STRIDE_INIT(4, 4, 20, 20, 20),
   1, &L5_dense_weights_array, NULL)
 
 /* Tensor #7 */
@@ -233,11 +233,11 @@ AI_LAYER_OBJ_DECLARE(
 AI_NETWORK_OBJ_DECLARE(
   AI_NET_OBJ_INSTANCE, AI_STATIC,
   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 6628, 1, 1),
-    6628, NULL, NULL),
+    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 164, 1, 1),
+    164, NULL, NULL),
   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 1624, 1, 1),
-    1624, NULL, NULL),
+    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 44, 1, 1),
+    44, NULL, NULL),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_IN_NUM, &input_0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_OUT_NUM, &L5_output),
   &L1_dense_layer, 0, NULL)
@@ -249,14 +249,14 @@ AI_NETWORK_OBJ_DECLARE(
   AI_BUFFER_ARRAY_OBJ_INIT_STATIC(
   	AI_FLAG_NONE, 1,
     AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 6628, 1, 1),
-      6628, NULL, NULL)
+      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 164, 1, 1),
+      164, NULL, NULL)
   ),
   AI_BUFFER_ARRAY_OBJ_INIT_STATIC(
   	AI_FLAG_NONE, 1,
     AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 1624, 1, 1),
-      1624, NULL, NULL)
+      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 44, 1, 1),
+      44, NULL, NULL)
   ),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_IN_NUM, &input_0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_OUT_NUM, &L5_output),
@@ -281,14 +281,14 @@ ai_bool network_configure_activations(
     L1_dense_output_array.data = AI_PTR(g_network_activations_map[0] + 24);
     L1_dense_output_array.data_start = AI_PTR(g_network_activations_map[0] + 24);
     
-    L1_output_array.data = AI_PTR(g_network_activations_map[0] + 24);
-    L1_output_array.data_start = AI_PTR(g_network_activations_map[0] + 24);
+    L1_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+    L1_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
     
-    L5_dense_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
-    L5_dense_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+    L5_dense_output_array.data = AI_PTR(g_network_activations_map[0] + 20);
+    L5_dense_output_array.data_start = AI_PTR(g_network_activations_map[0] + 20);
     
-    L5_output_array.data = AI_PTR(g_network_activations_map[0] + 4);
-    L5_output_array.data_start = AI_PTR(g_network_activations_map[0] + 4);
+    L5_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+    L5_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
     
     return true;
   }
@@ -309,20 +309,20 @@ ai_bool network_configure_weights(
     /* Updating weights (byte) offsets */
     
     L1_dense_weights_array.format |= AI_FMT_FLAG_CONST;
-    L1_dense_weights_array.data = AI_PTR(g_network_weights_map[0] + 1024);
+    L1_dense_weights_array.data = AI_PTR(g_network_weights_map[0] + 0);
     L1_dense_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 0);
     
     L1_dense_bias_array.format |= AI_FMT_FLAG_CONST;
-    L1_dense_bias_array.data = AI_PTR(g_network_weights_map[0] + 3424);
-    L1_dense_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 3424);
+    L1_dense_bias_array.data = AI_PTR(g_network_weights_map[0] + 120);
+    L1_dense_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 120);
     
     L5_dense_weights_array.format |= AI_FMT_FLAG_CONST;
-    L5_dense_weights_array.data = AI_PTR(g_network_weights_map[0] + 5024);
-    L5_dense_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 5024);
+    L5_dense_weights_array.data = AI_PTR(g_network_weights_map[0] + 140);
+    L5_dense_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 140);
     
     L5_dense_bias_array.format |= AI_FMT_FLAG_CONST;
-    L5_dense_bias_array.data = AI_PTR(g_network_weights_map[0] + 6624);
-    L5_dense_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 6624);
+    L5_dense_bias_array.data = AI_PTR(g_network_weights_map[0] + 160);
+    L5_dense_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 160);
     
     return true;
   }
@@ -361,7 +361,7 @@ ai_bool ai_network_get_info(
       .api_version            = ai_platform_api_get_version(),
       .interface_api_version  = ai_platform_interface_api_get_version(),
       
-      .n_macc            = 3611,
+      .n_macc            = 56,
       .n_inputs          = 0,
       .inputs            = NULL,
       .n_outputs         = 0,
@@ -407,7 +407,7 @@ ai_bool ai_network_get_report(
       .api_version            = ai_platform_api_get_version(),
       .interface_api_version  = ai_platform_interface_api_get_version(),
       
-      .n_macc            = 3611,
+      .n_macc            = 56,
       .n_inputs          = 0,
       .inputs            = NULL,
       .n_outputs         = 0,

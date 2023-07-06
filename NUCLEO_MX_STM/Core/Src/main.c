@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
- ******************************************************************************
+ **************************
  * @file           : main.c
  * @brief          : Main program body
- ******************************************************************************
+ **************************
  * @attention
  *
  * Copyright (c) 2023 STMicroelectronics.
@@ -13,7 +13,7 @@
  * in the root directory of this software component.
  * If no LICENSE file comes with this software, it is provided AS-IS.
  *
- ******************************************************************************
+ **************************
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
@@ -36,11 +36,9 @@
 #include "app_x-cube-ai.h"
 
 #include <stdio.h>
-#include <math.h>
 
 #include "network.h"
 #include "network_data.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +60,7 @@ typedef enum
 #define Vth 				40
 
 #define MODEL_THRESHOLD		0.5
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -75,6 +74,10 @@ typedef enum
 uint32_t sensor1;
 uint32_t sensor2;
 uint32_t sensor3;
+uint32_t sensor;
+uint32_t Fest,Gun;
+float Local_f32Avg = 0;
+int32_t Mode = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,7 +109,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-/************************	Global Variables	************************/
+/********	Global Variables	********/
 static ai_handle network = AI_HANDLE_NULL;
 
 AI_ALIGNED(32)
@@ -153,51 +156,45 @@ int Model_Run(const void *in_data, void *out_data)
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
+  * @brief  The application entry point.
+  * @retval int
+  */
 int main(void)
 {
-	/* USER CODE BEGIN 1 */
-	uint32_t Local_u32Counter,Local_u32_RealData[250];
-	/* USER CODE END 1 */
+  /* USER CODE BEGIN 1 */
+	uint32_t Local_u32Counter,Local_u32_RealData[250],Local_u32AvgCounter;
+  /* USER CODE END 1 */
 
-	/* MCU Configuration--------------------------------------------------------*/
+  /* MCU Configuration--------------------------------------------------------*/
 
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-	/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* Configure the system clock */
-	SystemClock_Config();
+  /* Configure the system clock */
+  SystemClock_Config();
 
-	/* USER CODE BEGIN SysInit */
+  /* USER CODE BEGIN SysInit */
 
-	/* USER CODE END SysInit */
+  /* USER CODE END SysInit */
 
-	/* Initialize all configured peripherals */
-
-	/* Initialize GPIO */
-	MX_GPIO_Init();
-
-	/* Initialize ADC */
-	MX_ADC1_Init();
-	MX_ADC2_Init();
-	MX_ADC3_Init();
-
-	MX_TIM2_Init();
-	MX_TIM10_Init();
-	MX_TIM11_Init();
-	MX_TIM12_Init();
-	MX_TIM13_Init();
-	MX_TIM14_Init();
-	MX_USART2_UART_Init();
-	MX_CRC_Init();
-	/* USER CODE BEGIN 2 */
-
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
+  MX_ADC3_Init();
+  MX_TIM2_Init();
+  MX_TIM10_Init();
+  MX_TIM11_Init();
+  MX_TIM12_Init();
+  MX_TIM13_Init();
+  MX_TIM14_Init();
+  MX_USART2_UART_Init();
+  MX_CRC_Init();
+  /* USER CODE BEGIN 2 */
 	Model_Init();
 
 	/* Start GPs Timers */
@@ -217,7 +214,7 @@ int main(void)
 	SERVO_t Servo1;
 	Servo1.Pin = Servo_PB9;
 
-	/*************************	Testing	*************************/
+	/*********	Testing	*********/
 	uint32_t Data0[250] = {
 			0   , 0  , 0  , 0  , 96 , 94 , 0  , 3  , 5   , 20  ,
 			0   , 0  , 5  , 0  , 0  , 8  , 0  , 0  , 0   , 0   ,
@@ -267,16 +264,38 @@ int main(void)
 			,47	,86	,41	,0  ,0	,67	,137,74	,31	,117,0	,33	,0
 			,176,2,134
 	};
-
+	uint32_t Test[250] = {664,  167,   13,   82,  340,  865,  469,  663,  144,  316,   15,
+			356,  513,  560,  258,  108,  409,  456,  110,  383,  240,  227,
+			314,  866, 1667,  156,  419,  760,   32,  441,  432,  307,  294,
+			169,  234,  436,  703,  391,   82,  345,  100,  131,   58,  362,
+			222,  323,   47,   41,   40,  273,  141,  405,  805,  471,  468,
+			11,  127,  344,  178,  107,    5,  329,   80,   46,  190,    5,
+			411,   64,   65,  180,  133,  367,  590,  196,   61,   11,  170,
+			144,  454,  460,  188,  431,  112,  375,  208,  198,  139,    2,
+			131,   52,   39,  155,   38,  137,  289,  535,  144,  305,  387,
+			163, 1396,   43,  178,  219,  563,  268,  846,   62,  224,   37,
+			318,  126,  535,  126,  221,  123,   41,    4,  100,  156,  514,
+			145,  116,  159,   29,  171,   39,   66,  182,  332,   63,   85,
+			7,  112,   58,   81,  130,  192,  198,  609,   57,  108,   15,
+			106,  111,   92,   55,  100,  207,   88,  228,  254,   98,  250,
+			63,    4,   80,  271,  228,   11,    1,   71,   95,   15,  656,
+			275,  164,  150,  729,   85,   54,   71,   44,   34,   93,  220,
+			86,  309,  428,   39,  285,  440,   86,  203,  254,   79,  156,
+			12,  582,  275,  235,  481,   99,  190,    2,   93,  176,   96,
+			250,  333,  269,   94,  346,  757,   43,  475,  179,  474,  198,
+			227,  353,  159,   27,  233,   95,  407,  248,  152,  249,   68,
+			276,   79,    5,  217,   95,   29,    8,  104,   20,  156,  189,
+			146,   93,  125,   96,    5,  160,   51, 1495, 1831,   71,  599,
+			181,  250,  219,  246,   47,  213,   23,  225};
 	float Feat_Arr[6],Norm_Arr[6];
 
 	/*Feature Extraction*/
-	Feat_Arr[VAR_IDX]	= FEAT_EXT_f32_Variance(Data0,250);
-	Feat_Arr[RMS_IDX]   = FEAT_EXT_f32_RMS(Feat_Arr[1]);
-	Feat_Arr[MEAN_IDX]  = FEAT_EXT_f32_MeanAbsolute(Data0,250);
-	Feat_Arr[SSC_INDX]  = FEAT_EXT_u32_SlopeSignChange(Data0,250);
-	Feat_Arr[ZC_IDX]    = FEAT_EXT_u32_ZeroCrossing(Data0,250);
-	Feat_Arr[WVL_IDX]   = FEAT_EXT_u32_WaveformLength(Data0,250);
+	Feat_Arr[VAR_IDX]	= FEAT_EXT_f32_Variance(Test,250);
+	Feat_Arr[RMS_IDX]   = FEAT_EXT_f32_RMS(Feat_Arr[VAR_IDX]);
+	Feat_Arr[MEAN_IDX]  = FEAT_EXT_f32_MeanAbsolute(Test,250);
+	Feat_Arr[SSC_INDX]  = FEAT_EXT_u32_SlopeSignChange(Test,250);
+	Feat_Arr[ZC_IDX]    = FEAT_EXT_u32_ZeroCrossing(Test,250);
+	Feat_Arr[WVL_IDX]   = FEAT_EXT_u32_WaveformLength(Test,250);
 
 	/*Normalization*/
 	Norm_Arr[VAR_IDX]  = NORM_f32_Variance(SNS1, Feat_Arr[VAR_IDX]);
@@ -298,123 +317,143 @@ int main(void)
 
 	Model_Run(in_data, out_data);
 
-	if(*out_data > MODEL_THRESHOLD)
+	if(*out_data < MODEL_THRESHOLD)
 	{
 		Servo_void_SetAngle(Servo1,180);
+		Fest = 100;
+		Gun = 0;
+
 	}
 	else
 	{
 		Servo_void_SetAngle(Servo1,90);
+		Fest = 0;
+		Gun = 100;
 	}
-	/* USER CODE END 2 */
+  /* USER CODE END 2 */
 
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
-		for(Local_u32Counter = 0 ;Local_u32Counter < 250; Local_u32Counter++)
+    /* USER CODE BEGIN 3 */
+		for(Local_u32AvgCounter = 0 ; Local_u32AvgCounter < 3; Local_u32AvgCounter++)
 		{
-			Local_u32_RealData[Local_u32Counter] = analogRead(&hadc1);
+			for(Local_u32Counter = 0 ;Local_u32Counter < 250;)
+			{
+				sensor = analogRead(&hadc1);
+				HAL_Delay(2);
+				if(sensor != 0)
+				{
+					Local_u32_RealData[Local_u32Counter++] = sensor;
+				}
+			}
+			/*Feature Extraction*/
+			Feat_Arr[VAR_IDX]	= FEAT_EXT_f32_Variance(Local_u32_RealData,250);
+			Feat_Arr[RMS_IDX]   = FEAT_EXT_f32_RMS(Feat_Arr[VAR_IDX]);
+			Feat_Arr[MEAN_IDX]  = FEAT_EXT_f32_MeanAbsolute(Local_u32_RealData,250);
+			Feat_Arr[SSC_INDX]  = FEAT_EXT_u32_SlopeSignChange(Local_u32_RealData,250);
+			Feat_Arr[ZC_IDX]    = FEAT_EXT_u32_ZeroCrossing(Local_u32_RealData,250);
+			Feat_Arr[WVL_IDX]   = FEAT_EXT_u32_WaveformLength(Local_u32_RealData,250);
+
+			/*Normalization*/
+			Norm_Arr[VAR_IDX]  = NORM_f32_Variance(SNS1, Feat_Arr[VAR_IDX]);
+			Norm_Arr[RMS_IDX]  = NORM_f32_RMS(SNS1, Feat_Arr[RMS_IDX]);
+			Norm_Arr[MEAN_IDX] = NORM_f32_Mean(SNS1, Feat_Arr[MEAN_IDX]);
+			Norm_Arr[SSC_INDX] = NORM_f32_SlopeSignChange(SNS1,Feat_Arr[SSC_INDX]);
+			Norm_Arr[ZC_IDX]   = NORM_f32_ZeroCrossing(SNS1,Feat_Arr[ZC_IDX]);
+			Norm_Arr[WVL_IDX]  = NORM_f32_WaveformLength(SNS1, Feat_Arr[WVL_IDX]);
+
+			/*Model Running*/
+
+			/*Movement 1 Data*/
+			in_data[RMS_IDX]  = Norm_Arr[RMS_IDX];
+			in_data[VAR_IDX]  = Norm_Arr[VAR_IDX];
+			in_data[MEAN_IDX] = Norm_Arr[MEAN_IDX];
+			in_data[SSC_INDX] = Norm_Arr[SSC_INDX];
+			in_data[ZC_IDX]   = Norm_Arr[ZC_IDX];
+			in_data[WVL_IDX]  = Norm_Arr[WVL_IDX];
+
+			Model_Run(in_data, out_data);
+
+			if(*out_data < MODEL_THRESHOLD)
+			{
+				Servo_void_SetAngle(Servo1,180);
+				Mode--;
+
+			}
+			else
+			{
+				Servo_void_SetAngle(Servo1,90);
+				Mode++;
+			}
 		}
-		/*Feature Extraction*/
-		Feat_Arr[VAR_IDX]	= FEAT_EXT_f32_Variance(Local_u32_RealData,250);
-		Feat_Arr[RMS_IDX]   = FEAT_EXT_f32_RMS(Feat_Arr[1]);
-		Feat_Arr[MEAN_IDX]  = FEAT_EXT_f32_MeanAbsolute(Local_u32_RealData,250);
-		Feat_Arr[SSC_INDX]  = FEAT_EXT_u32_SlopeSignChange(Local_u32_RealData,250);
-		Feat_Arr[ZC_IDX]    = FEAT_EXT_u32_ZeroCrossing(Local_u32_RealData,250);
-		Feat_Arr[WVL_IDX]   = FEAT_EXT_u32_WaveformLength(Local_u32_RealData,250);
 
-		/*Normalization*/
-		Norm_Arr[VAR_IDX]  = NORM_f32_Variance(SNS1, Feat_Arr[VAR_IDX]);
-		Norm_Arr[RMS_IDX]  = NORM_f32_RMS(SNS1, Feat_Arr[RMS_IDX]);
-		Norm_Arr[MEAN_IDX] = NORM_f32_Mean(SNS1, Feat_Arr[MEAN_IDX]);
-		Norm_Arr[SSC_INDX] = NORM_f32_SlopeSignChange(SNS1,Feat_Arr[SSC_INDX]);
-		Norm_Arr[ZC_IDX]   = NORM_f32_ZeroCrossing(SNS1,Feat_Arr[ZC_IDX]);
-		Norm_Arr[WVL_IDX]  = NORM_f32_WaveformLength(SNS1, Feat_Arr[WVL_IDX]);
-
-		/*Model Running*/
-
-		/*Movement 1 Data*/
-		in_data[RMS_IDX]  = Norm_Arr[RMS_IDX];
-		in_data[VAR_IDX]  = Norm_Arr[VAR_IDX];
-		in_data[MEAN_IDX] = Norm_Arr[MEAN_IDX];
-		in_data[SSC_INDX] = Norm_Arr[SSC_INDX];
-		in_data[ZC_IDX]   = Norm_Arr[ZC_IDX];
-		in_data[WVL_IDX]  = Norm_Arr[WVL_IDX];
-
-		Model_Run(in_data, out_data);
-
-		if(*out_data > MODEL_THRESHOLD)
+		if(Mode < 0)
 		{
-			Servo_void_SetAngle(Servo1,180);
+			Fest = 100;
+			Gun = 0;
 		}
 		else
 		{
-			Servo_void_SetAngle(Servo1,90);
+			Fest = 0;
+			Gun = 100;
 		}
-		//		sensor1 = analogRead(&hadc1);
-		//		sensor2 = analogRead(&hadc1);
-		//		sensor3 = analogRead(&hadc1);
-		//		serial_print(sensor1);
-		//		serial_print_str(",");
-		//		serial_print(sensor2);
-		//		serial_print_str(",");
-		//		serial_println(sensor3);
-		//		HAL_Delay(1);
 
+		HAL_Delay(500);
+		Mode = 0;
 
 	}
-	/* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
-	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-	/** Configure the main internal regulator output voltage
-	 */
-	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 
-	/** Initializes the RCC Oscillators according to the specified parameters
-	 * in the RCC_OscInitTypeDef structure.
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-	RCC_OscInitStruct.PLL.PLLM = 8;
-	RCC_OscInitStruct.PLL.PLLN = 90;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 2;
-	RCC_OscInitStruct.PLL.PLLR = 2;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-	{
-		Error_Handler();
-	}
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 90;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-			|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-	{
-		Error_Handler();
-	}
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 /* USER CODE BEGIN 4 */
@@ -422,33 +461,33 @@ void SystemClock_Config(void)
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
-	/* USER CODE BEGIN Error_Handler_Debug */
+  /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
 	while (1)
 	{
 	}
-	/* USER CODE END Error_Handler_Debug */
+  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
 /**
- * @brief  Reports the name of the source file and the source line number
- *         where the assert_param error has occurred.
- * @param  file: pointer to the source file name
- * @param  line: assert_param error line source number
- * @retval None
- */
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-	/* USER CODE BEGIN 6 */
+  /* USER CODE BEGIN 6 */
 	/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-	/* USER CODE END 6 */
+  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
