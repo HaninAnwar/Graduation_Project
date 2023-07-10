@@ -1,0 +1,282 @@
+{
+    "_allocate_inputs": 4,
+    "_allocate_outputs": 4,
+    "cli_parameters": "analyze --name network -m F:/Graduation Project/Git_foulder/5_Movements/Model/2 sensors/model_8_7_2_4_movement_5.h5 --type keras --compression none --verbosity 1 --workspace C:\\Users\\HANINA~1\\AppData\\Local\\Temp\\mxAI_workspace13246958437330015491415028168687298 --output C:\\Users\\Hanin Anwar\\.stm32cubemx\\network_output --allocate-inputs --series stm32f4 --allocate-outputs",
+    "cli_version": {
+        "major": 1,
+        "micro": 0,
+        "minor": 7
+    },
+    "cli_version_str": "1.7.0",
+    "compression": {
+        "factor": null,
+        "layers": {}
+    },
+    "date_time": "Mon Jul 10 01:18:58 2023",
+    "error": 0,
+    "error_str": [],
+    "exec_cmd": "analyze",
+    "exec_duration": 0.0,
+    "hash": "f056537b797bd2d9eb665a0116023b90",
+    "inputs": [
+        "input_0"
+    ],
+    "layers": [
+        {
+            "c_id": [
+                0,
+                1
+            ],
+            "extras": {
+                "n_macc": 0,
+                "n_params": 0,
+                "psize": 0,
+                "rom_output": {
+                    "c_size": 48,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        12,
+                        1
+                    ]
+                },
+                "rom_size": 364
+            },
+            "id": 0,
+            "inputs": [],
+            "name": "input_0",
+            "original": null,
+            "type": "Input"
+        },
+        {
+            "c_id": [],
+            "extras": {
+                "n_macc": 91,
+                "n_params": 91,
+                "psize": 364,
+                "rom_output": {
+                    "c_size": 28,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        7,
+                        1
+                    ]
+                },
+                "rom_size": 0
+            },
+            "id": 0,
+            "inputs": [
+                "input_0"
+            ],
+            "name": "dense_59_dense",
+            "original": "Dense",
+            "type": "Dense"
+        },
+        {
+            "c_id": [],
+            "extras": {
+                "n_macc": 7,
+                "n_params": 0,
+                "psize": 0,
+                "rom_output": {
+                    "c_size": 28,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        7,
+                        1
+                    ]
+                },
+                "rom_size": 0
+            },
+            "id": 0,
+            "inputs": [
+                "dense_59_dense"
+            ],
+            "name": "dense_59",
+            "original": "Dense",
+            "type": "Nonlinearity"
+        },
+        {
+            "c_id": [
+                2,
+                3
+            ],
+            "extras": {
+                "n_macc": 40,
+                "n_params": 40,
+                "psize": 160,
+                "rom_output": {
+                    "c_size": 20,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        5,
+                        1
+                    ]
+                },
+                "rom_size": 160
+            },
+            "id": 1,
+            "inputs": [
+                "dense_59"
+            ],
+            "name": "dense_60_dense",
+            "original": "Dense",
+            "type": "Dense"
+        },
+        {
+            "c_id": [],
+            "extras": {
+                "n_macc": 5,
+                "n_params": 0,
+                "psize": 0,
+                "rom_output": {
+                    "c_size": 20,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        5,
+                        1
+                    ]
+                },
+                "rom_size": 0
+            },
+            "id": 1,
+            "inputs": [
+                "dense_60_dense"
+            ],
+            "name": "dense_60",
+            "original": "Dense",
+            "type": "Nonlinearity"
+        },
+        {
+            "c_id": [
+                4,
+                5
+            ],
+            "extras": {
+                "n_macc": 24,
+                "n_params": 24,
+                "psize": 96,
+                "rom_output": {
+                    "c_size": 16,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        4,
+                        1
+                    ]
+                },
+                "rom_size": 96
+            },
+            "id": 2,
+            "inputs": [
+                "dense_60"
+            ],
+            "name": "dense_61_dense",
+            "original": "Dense",
+            "type": "Dense"
+        },
+        {
+            "c_id": [],
+            "extras": {
+                "n_macc": 60,
+                "n_params": 0,
+                "psize": 0,
+                "rom_output": {
+                    "c_size": 16,
+                    "fmt": {
+                        "format": "float"
+                    },
+                    "shape": [
+                        1,
+                        1,
+                        4,
+                        1
+                    ]
+                },
+                "rom_size": 0
+            },
+            "id": 2,
+            "inputs": [
+                "dense_61_dense"
+            ],
+            "name": "dense_61",
+            "original": "Dense",
+            "type": "Nonlinearity"
+        }
+    ],
+    "model_files": [
+        "F:\\Graduation Project\\Git_foulder\\5_Movements\\Model\\2 sensors\\model_8_7_2_4_movement_5.h5"
+    ],
+    "model_n_params": 155,
+    "model_name": "model_8_7_2_4_movement_5",
+    "model_size": 620,
+    "model_type": "keras",
+    "name": "network",
+    "outputs": [
+        "dense_61"
+    ],
+    "ram_io_size": [
+        48,
+        16
+    ],
+    "ram_size": [
+        76,
+        76
+    ],
+    "report_version": 1.1,
+    "rom_cfact": 1.0,
+    "rom_heap_inspector": 2048,
+    "rom_inputs": [
+        {
+            "c_size": 48,
+            "c_type": "float",
+            "name": "input_0"
+        }
+    ],
+    "rom_n_macc": 227,
+    "rom_outputs": [
+        {
+            "c_size": 16,
+            "c_type": "float",
+            "name": "dense_61"
+        }
+    ],
+    "rom_size": 620,
+    "strategy": "heap_overlay",
+    "tools_api_version": {
+        "major": 1,
+        "micro": 0,
+        "minor": 7
+    },
+    "tools_version": {
+        "extra": "19451",
+        "major": 8,
+        "micro": 1,
+        "minor": 0
+    },
+    "val_error": -1.0,
+    "val_error_desc": "None (None) #-1",
+    "val_metrics": []
+}
