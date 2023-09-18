@@ -1,0 +1,7 @@
+../Core/Src/NORM_program.c:10:7:NORM_f32_SlopeSignChange	24	static
+../Core/Src/NORM_program.c:25:7:NORM_f32_ZeroCrossing	24	static
+../Core/Src/NORM_program.c:39:7:NORM_f32_WaveformLength	24	static
+../Core/Src/NORM_program.c:52:7:NORM_f32_RMS	24	static
+../Core/Src/NORM_program.c:66:7:NORM_f32_Variance	24	static
+../Core/Src/NORM_program.c:80:7:NORM_f32_Mean	24	static
+../Core/Src/NORM_program.c:94:9:NORM_f32_AllNorm	32	static

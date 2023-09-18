@@ -1,0 +1,150 @@
+Neural Network Tools for STM32AI v1.7.0 (STM.ai v8.0.1-19451)
+Created date          : 2023-08-15 22:11:30
+Parameters            : generate --name network -m F:/Graduation Project/Git_foulder/5_Movements/Model/model_11_7_2_5_movement_2.h5 --type keras --compression none --verbosity 1 --workspace C:\Users\HANINA~1\AppData\Local\Temp\mxAI_workspace157143429185003411720700017385228 --output C:\Users\Hanin Anwar\.stm32cubemx\network_output --allocate-inputs --series stm32f4 --allocate-outputs
+
+Exec/report summary (generate)
+--------------------------------------------------------------------------------------------------------------
+model file         :   F:\Graduation Project\Git_foulder\5_Movements\Model\model_11_7_2_5_movement_2.h5       
+type               :   keras                                                                                  
+c_name             :   network                                                                                
+compression        :   none                                                                                   
+options            :   allocate-inputs, allocate-outputs                                                      
+optimization       :   balanced                                                                               
+target/series      :   stm32f4                                                                                
+workspace dir      :   C:\Users\HANINA~1\AppData\Local\Temp\mxAI_workspace157143429185003411720700017385228   
+output dir         :   C:\Users\Hanin Anwar\.stm32cubemx\network_output                                       
+model_fmt          :   float                                                                                  
+model_name         :   model_11_7_2_5_movement_2                                                              
+model_hash         :   7a43d3fcb49a34a77072ce75342f715f                                                       
+params #           :   410 items (1.60 KiB)                                                                   
+--------------------------------------------------------------------------------------------------------------
+input 1/1          :   'input_0' (domain:activations/**default**)                                             
+                   :   12 items, 48 B, ai_float, float, (1,1,1,12)                                            
+output 1/1         :   'dense_52' (domain:activations/**default**)                                            
+                   :   5 items, 20 B, ai_float, float, (1,1,1,5)                                              
+macc               :   510                                                                                    
+weights (ro)       :   1,640 B (1.60 KiB) (1 segment)                                                         
+activations (rw)   :   108 B (108 B) (1 segment) *                                                            
+ram (total)        :   108 B (108 B) = 108 + 0 + 0                                                            
+--------------------------------------------------------------------------------------------------------------
+(*) 'input'/'output' buffers can be used from the activations buffer
+
+Model name - model_11_7_2_5_movement_2 ['input_0'] ['dense_52']
+------ -------------------------------- --------------- ------------ ------ ---------------- --- --------------- --------------- ----------------------------- 
+m_id   layer (type,original)            oshape          param/size     macc     connected to   | c_size          c_macc          c_type                        
+------ -------------------------------- --------------- ------------ ------ ---------------- --- --------------- --------------- ----------------------------- 
+0      input_0 (Input, None)            [b:None,c:12]                                          | +780(+100.0%)   +210(+100.0%)   dense_of32/nl_of32[0, 1]      
+       dense_50_dense (Dense, Dense)    [b:None,c:15]   195/780         195          input_0   | -780(-100.0%)   -195(-100.0%)   
+       dense_50 (Nonlinearity, Dense)   [b:None,c:15]                    15   dense_50_dense   |                 -15(-100.0%)    
+------ -------------------------------- --------------- ------------ ------ ---------------- --- --------------- --------------- ----------------------------- 
+1      dense_51_dense (Dense, Dense)    [b:None,c:10]   160/640         160         dense_50   |                 +10(+6.2%)      dense_of32/nl_of32[2, 3]      
+       dense_51 (Nonlinearity, Dense)   [b:None,c:10]                    10   dense_51_dense   |                 -10(-100.0%)    
+------ -------------------------------- --------------- ------------ ------ ---------------- --- --------------- --------------- ----------------------------- 
+2      dense_52_dense (Dense, Dense)    [b:None,c:5]    55/220           55         dense_51   |                 +75(+136.4%)    dense_of32/nl_of32[o][4, 5]   
+       dense_52 (Nonlinearity, Dense)   [b:None,c:5]                     75   dense_52_dense   |                 -75(-100.0%)    
+------ -------------------------------- --------------- ------------ ------ ---------------- --- --------------- --------------- ----------------------------- 
+model/c-model: macc=510/510  weights=1,640/1,640  activations=--/108 io=--/0
+
+
+
+Generated C-graph summary
+------------------------------------------------------------------------------------------------------------------------
+model name            : model_11_7_2_5_movement_2
+c-name                : network
+c-node #              : 6
+c-array #             : 13
+activations size      : 108 (1 segment)
+weights size          : 1640 (1 segment)
+macc                  : 510
+inputs                : ['input_0_output']
+outputs               : ['dense_52_output']
+
+C-Arrays (13)
+------ ------------------------ ----------- ------------------------- ------------- --------- --------- 
+c_id   name (*_array)           item/size   domain/mem-pool           c-type        fmt       comment   
+------ ------------------------ ----------- ------------------------- ------------- --------- --------- 
+0      dense_51_dense_bias      10/40       weights/weights           const float   float32             
+1      input_0_output           12/48       activations/**default**   float         float32   /input    
+2      dense_50_dense_output    15/60       activations/**default**   float         float32             
+3      dense_52_dense_weights   50/200      weights/weights           const float   float32             
+4      dense_50_output          15/60       activations/**default**   float         float32             
+5      dense_51_dense_output    10/40       activations/**default**   float         float32             
+6      dense_52_dense_bias      5/20        weights/weights           const float   float32             
+7      dense_51_output          10/40       activations/**default**   float         float32             
+8      dense_52_dense_output    5/20        activations/**default**   float         float32             
+9      dense_52_output          5/20        activations/**default**   float         float32   /output   
+10     dense_50_dense_weights   180/720     weights/weights           const float   float32             
+11     dense_50_dense_bias      15/60       weights/weights           const float   float32             
+12     dense_51_dense_weights   150/600     weights/weights           const float   float32             
+------ ------------------------ ----------- ------------------------- ------------- --------- --------- 
+
+C-Layers (6)
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+c_id   name (*_layer)   id   layer_type   macc   rom   tensors                     shape (array id)   
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+0      dense_50_dense   0    dense        195    780   I: input_0_output           (1,1,1,12) (1)     
+                                                       W: dense_50_dense_weights   (12,1,1,15) (10)   
+                                                       W: dense_50_dense_bias      (1,1,1,15) (11)    
+                                                       O: dense_50_dense_output    (1,1,1,15) (2)     
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+1      dense_50         0    nl           15     0     I: dense_50_dense_output    (1,1,1,15) (2)     
+                                                       O: dense_50_output          (1,1,1,15) (4)     
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+2      dense_51_dense   1    dense        160    640   I: dense_50_output          (1,1,1,15) (4)     
+                                                       W: dense_51_dense_weights   (15,1,1,10) (12)   
+                                                       W: dense_51_dense_bias      (1,1,1,10) (0)     
+                                                       O: dense_51_dense_output    (1,1,1,10) (5)     
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+3      dense_51         1    nl           10     0     I: dense_51_dense_output    (1,1,1,10) (5)     
+                                                       O: dense_51_output          (1,1,1,10) (7)     
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+4      dense_52_dense   2    dense        55     220   I: dense_51_output          (1,1,1,10) (7)     
+                                                       W: dense_52_dense_weights   (10,1,1,5) (3)     
+                                                       W: dense_52_dense_bias      (1,1,1,5) (6)      
+                                                       O: dense_52_dense_output    (1,1,1,5) (8)      
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+5      dense_52         2    nl           75     0     I: dense_52_dense_output    (1,1,1,5) (8)      
+                                                       O: dense_52_output          (1,1,1,5) (9)      
+------ ---------------- ---- ------------ ------ ----- --------------------------- ------------------ 
+
+
+
+Number of operations per c-layer
+------- ------ ------------------------ ----- -------------- -------- ---------- 
+c_id    m_id   name (type)                #op           type   #param   sparsity 
+------- ------ ------------------------ ----- -------------- -------- ---------- 
+0       0      dense_50_dense (dense)     195   smul_f32_f32      195     0.0000 
+1       0      dense_50 (nl)               15     op_f32_f32          
+2       1      dense_51_dense (dense)     160   smul_f32_f32      160     0.0000 
+3       1      dense_51 (nl)               10     op_f32_f32          
+4       2      dense_52_dense (dense)      55   smul_f32_f32       55     0.0000 
+5       2      dense_52 (nl)               75     op_f32_f32          
+------- ------ ------------------------ ----- -------------- -------- ---------- 
+total                                     510                     410     0.0000 
+
+Number of operation types
+---------------- ----- ----------- 
+operation type       #           % 
+---------------- ----- ----------- 
+smul_f32_f32       410       80.4% 
+op_f32_f32         100       19.6% 
+
+Complexity report (model)
+------ ---------------- ------------------------- ------------------------- -------- 
+m_id   name             c_macc                    c_rom                     c_id     
+------ ---------------- ------------------------- ------------------------- -------- 
+0      input_0          ||||||||||||||||  41.2%   ||||||||||||||||  47.6%   [0, 1]   
+1      dense_51_dense   |||||||||||||     33.3%   |||||||||||||     39.0%   [2, 3]   
+2      dense_52_dense   ||||||||||        25.5%   |||||             13.4%   [4, 5]   
+------ ---------------- ------------------------- ------------------------- -------- 
+macc=510 weights=1,640 act=108 ram_io=0
+
+Generated files (7)
+------------------------------------------------------------------------ 
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network_config.h        
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network.h               
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network.c               
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network_data_params.h   
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network_data_params.c   
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network_data.h          
+C:\Users\Hanin Anwar\.stm32cubemx\network_output\network_data.c          
