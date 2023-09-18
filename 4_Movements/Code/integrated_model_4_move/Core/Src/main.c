@@ -39,6 +39,7 @@
 
 #include "network.h"
 #include "network_data.h"
+#include "movements.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -147,50 +148,50 @@ int Model_Run(const void *in_data, void *out_data)
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
+	/* USER CODE BEGIN 1 */
 	uint32_t Local_u32Counter,Local_u32_RealData[3][250],Local_u32AvgCounter;
 
 	uint8_t Local_u8Avg = 5;
 	uint8_t Local_u8Max,Local_u8ModeArr[Local_u8Avg],Local_u8Sum=0;
 	float Feat_f32Arr[3][6] , Norm_f32Arr[3][6];
 
-  /* USER CODE END 1 */
+	/* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-  /* USER CODE BEGIN Init */
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+	/* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+	/* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
+	/* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
-  MX_ADC1_Init();
-  MX_ADC2_Init();
-  MX_ADC3_Init();
-  MX_CRC_Init();
-  MX_TIM2_Init();
-  MX_TIM10_Init();
-  MX_TIM11_Init();
-  MX_TIM12_Init();
-  MX_TIM13_Init();
-  MX_TIM14_Init();
-  /* USER CODE BEGIN 2 */
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_USART2_UART_Init();
+	MX_ADC1_Init();
+	MX_ADC2_Init();
+	MX_ADC3_Init();
+	MX_CRC_Init();
+	MX_TIM2_Init();
+	MX_TIM10_Init();
+	MX_TIM11_Init();
+	MX_TIM12_Init();
+	MX_TIM13_Init();
+	MX_TIM14_Init();
+	/* USER CODE BEGIN 2 */
 	Model_Init();
 
 	/* Start GPs Timers */
@@ -206,14 +207,20 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);
-
-	SERVO_t Servo1,Servo2,Servo3,Servo4,Servo5;
+	//
+	//	SERVO_t Servo1,Servo2,Servo3,Servo4,Servo5;
+	//	Servo1.Pin = Servo_PA15;
+	//	Servo2.Pin = Servo_PB10;
+	//	Servo3.Pin = Servo_PB14;
+	//	Servo4.Pin = Servo_PB2;
+	//	Servo5.Pin = Servo_PB9;
+	SERVO_t Servo1, Servo2, Servo3, Servo4, Servo5;
 	Servo1.Pin = Servo_PA15;
 	Servo2.Pin = Servo_PB10;
 	Servo3.Pin = Servo_PB14;
 	Servo4.Pin = Servo_PB2;
 	Servo5.Pin = Servo_PB9;
-
+//	init_servo();
 	/*********	Testing	*********/
 	uint32_t Move2[250] = {0};
 	uint32_t Move1[250] = {
@@ -244,56 +251,56 @@ int main(void)
 
 	uint32_t Move0[SENSOR_NUM][250] = {
 			{    0,    0,    0,    0,   42,    0,    0,    0,    0,    0,    0,
-			           0,    0,  185,    0,    0,    0,    0,   83,    0,  100,  411,
-			           0,    0,  616,  500,  147,    0,    0,   65,    0,    0,    0,
-			           0,    0,   21,   78,    0,    0,  790,  128,    0,    0,    0,
-			         322,  379,    0,    0,    0,    0,  577,  204,    0,    0,    0,
-			           0,  319,    0,    0,    0,    0,    0,    0,    0,    0,  293,
-			           0,    0,    0,    0,   53,    0,    0,    0,    0,   34,    0,
-			          26,    0,    0,  165,  123,    0,    0,    0,   57,  127,    0,
-			           0,    0,    0,    0,    0,    0,    0,  254,    0,    0,   74,
-			           0,    0,  216,    0,    0,    0,  272,    0,    0,    0,    0,
-			           0,    0,    0,    0,  303,  333,    0,    0,    0,    0,    0,
-			           0,    0,   53,    0,    0,    0,    0,   86,    0,    0,    0,
-			           0,    0,    0,  243,    0,    0,  149,    0,    0,    0,    0,
-			          16,    0,    0,  514,  248,   15,    0,    0,  219,   54,    0,
-			           0,    0,    0,    0,    0,    0,    0,    0,    0,    0,  181,
-			         155,    0,    0,  402,    0,  103,    0,    0,    0,    0,    0,
-			           0,    0,   30,  621,    0,    0,    0,  242,  419,   62,    0,
-			          55,    0,    0, 1211,  128,  571,  363,    0,    0,    0,    0,
-			          98,  327,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-			           0,    0,   52,    0,    0,    0,    0,    0,  120,   84,    0,
-			           0,   25,    0,  552,  494,    0,    0,  410,  299,  419,    0,
-			           0,    0,    0,  448,  321,    0,    0,    0,    0,   38,    0,
-			          24,    0,    0,    0,   55,   47,    0,   86},
+					0,    0,  185,    0,    0,    0,    0,   83,    0,  100,  411,
+					0,    0,  616,  500,  147,    0,    0,   65,    0,    0,    0,
+					0,    0,   21,   78,    0,    0,  790,  128,    0,    0,    0,
+					322,  379,    0,    0,    0,    0,  577,  204,    0,    0,    0,
+					0,  319,    0,    0,    0,    0,    0,    0,    0,    0,  293,
+					0,    0,    0,    0,   53,    0,    0,    0,    0,   34,    0,
+					26,    0,    0,  165,  123,    0,    0,    0,   57,  127,    0,
+					0,    0,    0,    0,    0,    0,    0,  254,    0,    0,   74,
+					0,    0,  216,    0,    0,    0,  272,    0,    0,    0,    0,
+					0,    0,    0,    0,  303,  333,    0,    0,    0,    0,    0,
+					0,    0,   53,    0,    0,    0,    0,   86,    0,    0,    0,
+					0,    0,    0,  243,    0,    0,  149,    0,    0,    0,    0,
+					16,    0,    0,  514,  248,   15,    0,    0,  219,   54,    0,
+					0,    0,    0,    0,    0,    0,    0,    0,    0,    0,  181,
+					155,    0,    0,  402,    0,  103,    0,    0,    0,    0,    0,
+					0,    0,   30,  621,    0,    0,    0,  242,  419,   62,    0,
+					55,    0,    0, 1211,  128,  571,  363,    0,    0,    0,    0,
+					98,  327,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+					0,    0,   52,    0,    0,    0,    0,    0,  120,   84,    0,
+					0,   25,    0,  552,  494,    0,    0,  410,  299,  419,    0,
+					0,    0,    0,  448,  321,    0,    0,    0,    0,   38,    0,
+					24,    0,    0,    0,   55,   47,    0,   86},
 					{  0.,    0.,  192.,    0.,  309.,  566.,  631.,  238.,    0.,
-					           0.,  202.,    5.,  175.,    0.,    0.,    0.,  172.,    0.,
-					           0.,  106.,    0.,   71.,    0.,    0.,    0.,  105.,  650.,
-					           3.,    0.,   24.,    0.,  134.,    0.,    0.,  306.,    0.,
-					          81.,   39.,    0.,    0.,   55.,    0.,    0.,    0.,    0.,
-					          10.,    0.,    0.,    0.,   13.,  582.,  235.,    0.,    0.,
-					         101.,    0.,    0.,    0.,    0.,  377.,  112.,  312.,    0.,
-					           0.,    0.,  494.,   34.,    0.,    0.,  228.,    0.,    0.,
-					         349.,    0.,  128.,   68.,  301.,  178.,    0.,  343.,    0.,
-					         489.,  581.,    0.,  261.,  229.,  212.,  408.,    0.,  248.,
-					         504.,    0.,    0.,    0.,    0.,  168.,    0.,    0.,    0.,
-					           0.,  156.,    0.,    0.,   82.,    9.,   46.,    0.,    0.,
-					           0.,    0.,   52.,    0.,    0.,    0.,   65.,  168.,  108.,
-					           0.,   13.,    0.,    0.,   11.,  208.,  145.,    0.,    0.,
-					           0.,  176.,  427.,  204.,    0.,    0.,   73.,  130.,   34.,
-					         108.,    0.,  362.,   24.,    0.,    0.,    0.,  225.,   91.,
-					           0.,    0.,  770.,  301.,    0.,    0.,    0.,  490.,   24.,
-					         149.,    0.,    0.,  351.,  151.,    0.,  331.,  228.,    0.,
-					          22.,   16.,    0.,  355.,    0.,    0.,  133.,  242.,   36.,
-					           0.,    0.,   92.,  408.,   80.,    0.,    0.,  286.,  284.,
-					           0.,    0.,    0.,  361.,    4.,  364.,    0.,  143.,    0.,
-					           0.,  139.,  606.,  412.,  277.,  979.,    0.,    0.,   17.,
-					           0., 1165.,    0.,   97.,   81.,   29.,  250.,    0.,  560.,
-					           0.,    0.,    0.,    0.,  181.,    0.,    0.,    0.,  112.,
-					         226.,  657.,    0.,    0.,    0.,  791.,  283., 1183., 1460.,
-					           0.,    0.,  314., 1105.,  723.,   72.,    0.,    0.,    0.,
-					         579.,  594.,    0.,    0.,    0.,  103.,    0.,  138.,    0.,
-					           0.,    0.,  173.,  181.,  368.,   64.,  125.},
+							0.,  202.,    5.,  175.,    0.,    0.,    0.,  172.,    0.,
+							0.,  106.,    0.,   71.,    0.,    0.,    0.,  105.,  650.,
+							3.,    0.,   24.,    0.,  134.,    0.,    0.,  306.,    0.,
+							81.,   39.,    0.,    0.,   55.,    0.,    0.,    0.,    0.,
+							10.,    0.,    0.,    0.,   13.,  582.,  235.,    0.,    0.,
+							101.,    0.,    0.,    0.,    0.,  377.,  112.,  312.,    0.,
+							0.,    0.,  494.,   34.,    0.,    0.,  228.,    0.,    0.,
+							349.,    0.,  128.,   68.,  301.,  178.,    0.,  343.,    0.,
+							489.,  581.,    0.,  261.,  229.,  212.,  408.,    0.,  248.,
+							504.,    0.,    0.,    0.,    0.,  168.,    0.,    0.,    0.,
+							0.,  156.,    0.,    0.,   82.,    9.,   46.,    0.,    0.,
+							0.,    0.,   52.,    0.,    0.,    0.,   65.,  168.,  108.,
+							0.,   13.,    0.,    0.,   11.,  208.,  145.,    0.,    0.,
+							0.,  176.,  427.,  204.,    0.,    0.,   73.,  130.,   34.,
+							108.,    0.,  362.,   24.,    0.,    0.,    0.,  225.,   91.,
+							0.,    0.,  770.,  301.,    0.,    0.,    0.,  490.,   24.,
+							149.,    0.,    0.,  351.,  151.,    0.,  331.,  228.,    0.,
+							22.,   16.,    0.,  355.,    0.,    0.,  133.,  242.,   36.,
+							0.,    0.,   92.,  408.,   80.,    0.,    0.,  286.,  284.,
+							0.,    0.,    0.,  361.,    4.,  364.,    0.,  143.,    0.,
+							0.,  139.,  606.,  412.,  277.,  979.,    0.,    0.,   17.,
+							0., 1165.,    0.,   97.,   81.,   29.,  250.,    0.,  560.,
+							0.,    0.,    0.,    0.,  181.,    0.,    0.,    0.,  112.,
+							226.,  657.,    0.,    0.,    0.,  791.,  283., 1183., 1460.,
+							0.,    0.,  314., 1105.,  723.,   72.,    0.,    0.,    0.,
+							579.,  594.,    0.,    0.,    0.,  103.,    0.,  138.,    0.,
+							0.,    0.,  173.,  181.,  368.,   64.,  125.},
 							{   2, 2343,  198,  757,  359,  553,  152,    0,    0,  292,  896,
 									113,   53,    0,  226,  185,   31,  472,  422,    0,   32,   15,
 									172,    0,  463,  535, 1535,   45,   52,   93,   59,  330,   94,
@@ -325,73 +332,73 @@ int main(void)
 
 	float Local_f32KoftaFeat[18],Local_f32KoftaNorm[18];
 
-//	Local_f32KoftaFeat[VAR_IDX ] = FEAT_EXT_f32_Variance(Move0[0],DATA_SIZE);
-//	Local_f32KoftaFeat[RMS_IDX ] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX]);
-//	Local_f32KoftaFeat[MEAN_IDX] = FEAT_EXT_f32_Mean(Move0[0],DATA_SIZE);
-//	Local_f32KoftaFeat[SSC_IDX] = FEAT_EXT_u32_SlopeSignChange(Move0[0],DATA_SIZE);
-//	Local_f32KoftaFeat[ZC_IDX  ] = FEAT_EXT_u32_ZeroCrossing(Move0[0],DATA_SIZE) ;
-//	Local_f32KoftaFeat[WVL_IDX ] = FEAT_EXT_u32_WaveformLength(Move0[0],DATA_SIZE);
-//
-//	Local_f32KoftaFeat[VAR_IDX+6] = FEAT_EXT_f32_Variance(Move0[1],DATA_SIZE);
-//	Local_f32KoftaFeat[RMS_IDX+6] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX+6]);
-//	Local_f32KoftaFeat[MEAN_IDX+6] = FEAT_EXT_f32_Mean(Move0[1],DATA_SIZE);
-//	Local_f32KoftaFeat[SSC_IDX+6] = FEAT_EXT_u32_SlopeSignChange(Move0[1],DATA_SIZE);
-//	Local_f32KoftaFeat[ZC_IDX+6] = FEAT_EXT_u32_ZeroCrossing(Move0[1],DATA_SIZE) ;
-//	Local_f32KoftaFeat[WVL_IDX+6] = FEAT_EXT_u32_WaveformLength(Move0[1],DATA_SIZE);
-//
-//
-//	Local_f32KoftaFeat[VAR_IDX+12] = FEAT_EXT_f32_Variance(Move0[2],DATA_SIZE);
-//	Local_f32KoftaFeat[RMS_IDX+12] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX+12]);
-//	Local_f32KoftaFeat[MEAN_IDX+12] = FEAT_EXT_f32_Mean(Move0[2],DATA_SIZE);
-//	Local_f32KoftaFeat[SSC_IDX+12] = FEAT_EXT_u32_SlopeSignChange(Move0[2],DATA_SIZE);
-//	Local_f32KoftaFeat[ZC_IDX+12] = FEAT_EXT_u32_ZeroCrossing(Move0[2],DATA_SIZE) ;
-//	Local_f32KoftaFeat[WVL_IDX+12] = FEAT_EXT_u32_WaveformLength(Move0[2],DATA_SIZE);
-//
-//	Local_f32KoftaNorm[VAR_IDX ] = NORM_f32_Variance(SNS1, Local_f32KoftaFeat[VAR_IDX]);
-//	Local_f32KoftaNorm[RMS_IDX ] = NORM_f32_RMS(SNS1, Local_f32KoftaFeat[RMS_IDX]);
-//	Local_f32KoftaNorm[MEAN_IDX] = NORM_f32_Mean(SNS1, Local_f32KoftaFeat[MEAN_IDX]);
-//	Local_f32KoftaNorm[SSC_IDX]  = NORM_f32_SlopeSignChange(SNS1, Local_f32KoftaFeat[SSC_IDX]);
-//	Local_f32KoftaNorm[ZC_IDX  ] = NORM_f32_ZeroCrossing(SNS1, Local_f32KoftaFeat[ZC_IDX]);
-//	Local_f32KoftaNorm[WVL_IDX ] = NORM_f32_WaveformLength(SNS1, Local_f32KoftaFeat[WVL_IDX]);
-//
-//
-//
-//	Local_f32KoftaNorm[VAR_IDX+6] = NORM_f32_Variance(SNS2, Local_f32KoftaFeat[VAR_IDX+6]);
-//	Local_f32KoftaNorm[RMS_IDX+6] = NORM_f32_RMS(SNS2, Local_f32KoftaFeat[RMS_IDX+6]);
-//	Local_f32KoftaNorm[MEAN_IDX+6] = NORM_f32_Mean(SNS2, Local_f32KoftaFeat[MEAN_IDX+6]);
-//	Local_f32KoftaNorm[SSC_IDX+6]  = NORM_f32_SlopeSignChange(SNS2, Local_f32KoftaFeat[SSC_IDX+6]);
-//	Local_f32KoftaNorm[ZC_IDX+6] = NORM_f32_ZeroCrossing(SNS2, Local_f32KoftaFeat[ZC_IDX+6]);
-//	Local_f32KoftaNorm[WVL_IDX+6] = NORM_f32_WaveformLength(SNS2, Local_f32KoftaFeat[WVL_IDX+6]);
-//
-//
-//	Local_f32KoftaNorm[VAR_IDX+12] = NORM_f32_Variance(SNS2, Local_f32KoftaFeat[VAR_IDX+12]);
-//	Local_f32KoftaNorm[RMS_IDX+12] = NORM_f32_RMS(SNS3, Local_f32KoftaFeat[RMS_IDX+12]);
-//	Local_f32KoftaNorm[MEAN_IDX+12] = NORM_f32_Mean(SNS3, Local_f32KoftaFeat[MEAN_IDX+12]);
-//	Local_f32KoftaNorm[SSC_IDX+12]  = NORM_f32_SlopeSignChange(SNS3, Local_f32KoftaFeat[SSC_IDX+12]);
-//	Local_f32KoftaNorm[ZC_IDX+12] = NORM_f32_ZeroCrossing(SNS3, Local_f32KoftaFeat[ZC_IDX+12]);
-//	Local_f32KoftaNorm[WVL_IDX+12] = NORM_f32_WaveformLength(SNS3, Local_f32KoftaFeat[WVL_IDX+12]);
-//
-//	/*Movement 1 Data*/
-//	in_data[RMS_IDX]  	= Local_f32KoftaNorm[RMS_IDX];
-//	in_data[MEAN_IDX] 	= Local_f32KoftaNorm[MEAN_IDX];
-//	in_data[VAR_IDX]  	= Local_f32KoftaNorm[VAR_IDX];
-//	in_data[SSC_IDX] 	= Local_f32KoftaNorm[SSC_IDX];
-//	in_data[ZC_IDX]   	= Local_f32KoftaNorm[ZC_IDX];
-//	in_data[WVL_IDX]  	= Local_f32KoftaNorm[WVL_IDX];
-//
-//	in_data[RMS_IDX+6]  = Local_f32KoftaNorm[RMS_IDX+6];
-//	in_data[VAR_IDX+6]  = Local_f32KoftaNorm[VAR_IDX+6];
-//	in_data[MEAN_IDX+6] = Local_f32KoftaNorm[MEAN_IDX+6];
-//	in_data[SSC_IDX+6] 	= Local_f32KoftaNorm[SSC_IDX+6];
-//	in_data[ZC_IDX+6]   = Local_f32KoftaNorm[ZC_IDX+6];
-//	in_data[WVL_IDX+6]  = Local_f32KoftaNorm[WVL_IDX+6];
-//
-//	in_data[RMS_IDX+12]  = Local_f32KoftaNorm[RMS_IDX+12];
-//	in_data[VAR_IDX+12]  = Local_f32KoftaNorm[VAR_IDX+12];
-//	in_data[MEAN_IDX+12] = Local_f32KoftaNorm[MEAN_IDX+12];
-//	in_data[SSC_IDX+12]  = Local_f32KoftaNorm[SSC_IDX+12];
-//	in_data[ZC_IDX+12]   = Local_f32KoftaNorm[ZC_IDX+12];
-//	in_data[WVL_IDX+12]  = Local_f32KoftaNorm[WVL_IDX+12];
+	//	Local_f32KoftaFeat[VAR_IDX ] = FEAT_EXT_f32_Variance(Move0[0],DATA_SIZE);
+	//	Local_f32KoftaFeat[RMS_IDX ] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX]);
+	//	Local_f32KoftaFeat[MEAN_IDX] = FEAT_EXT_f32_Mean(Move0[0],DATA_SIZE);
+	//	Local_f32KoftaFeat[SSC_IDX] = FEAT_EXT_u32_SlopeSignChange(Move0[0],DATA_SIZE);
+	//	Local_f32KoftaFeat[ZC_IDX  ] = FEAT_EXT_u32_ZeroCrossing(Move0[0],DATA_SIZE) ;
+	//	Local_f32KoftaFeat[WVL_IDX ] = FEAT_EXT_u32_WaveformLength(Move0[0],DATA_SIZE);
+	//
+	//	Local_f32KoftaFeat[VAR_IDX+6] = FEAT_EXT_f32_Variance(Move0[1],DATA_SIZE);
+	//	Local_f32KoftaFeat[RMS_IDX+6] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX+6]);
+	//	Local_f32KoftaFeat[MEAN_IDX+6] = FEAT_EXT_f32_Mean(Move0[1],DATA_SIZE);
+	//	Local_f32KoftaFeat[SSC_IDX+6] = FEAT_EXT_u32_SlopeSignChange(Move0[1],DATA_SIZE);
+	//	Local_f32KoftaFeat[ZC_IDX+6] = FEAT_EXT_u32_ZeroCrossing(Move0[1],DATA_SIZE) ;
+	//	Local_f32KoftaFeat[WVL_IDX+6] = FEAT_EXT_u32_WaveformLength(Move0[1],DATA_SIZE);
+	//
+	//
+	//	Local_f32KoftaFeat[VAR_IDX+12] = FEAT_EXT_f32_Variance(Move0[2],DATA_SIZE);
+	//	Local_f32KoftaFeat[RMS_IDX+12] = FEAT_EXT_f32_RMS(Local_f32KoftaFeat[VAR_IDX+12]);
+	//	Local_f32KoftaFeat[MEAN_IDX+12] = FEAT_EXT_f32_Mean(Move0[2],DATA_SIZE);
+	//	Local_f32KoftaFeat[SSC_IDX+12] = FEAT_EXT_u32_SlopeSignChange(Move0[2],DATA_SIZE);
+	//	Local_f32KoftaFeat[ZC_IDX+12] = FEAT_EXT_u32_ZeroCrossing(Move0[2],DATA_SIZE) ;
+	//	Local_f32KoftaFeat[WVL_IDX+12] = FEAT_EXT_u32_WaveformLength(Move0[2],DATA_SIZE);
+	//
+	//	Local_f32KoftaNorm[VAR_IDX ] = NORM_f32_Variance(SNS1, Local_f32KoftaFeat[VAR_IDX]);
+	//	Local_f32KoftaNorm[RMS_IDX ] = NORM_f32_RMS(SNS1, Local_f32KoftaFeat[RMS_IDX]);
+	//	Local_f32KoftaNorm[MEAN_IDX] = NORM_f32_Mean(SNS1, Local_f32KoftaFeat[MEAN_IDX]);
+	//	Local_f32KoftaNorm[SSC_IDX]  = NORM_f32_SlopeSignChange(SNS1, Local_f32KoftaFeat[SSC_IDX]);
+	//	Local_f32KoftaNorm[ZC_IDX  ] = NORM_f32_ZeroCrossing(SNS1, Local_f32KoftaFeat[ZC_IDX]);
+	//	Local_f32KoftaNorm[WVL_IDX ] = NORM_f32_WaveformLength(SNS1, Local_f32KoftaFeat[WVL_IDX]);
+	//
+	//
+	//
+	//	Local_f32KoftaNorm[VAR_IDX+6] = NORM_f32_Variance(SNS2, Local_f32KoftaFeat[VAR_IDX+6]);
+	//	Local_f32KoftaNorm[RMS_IDX+6] = NORM_f32_RMS(SNS2, Local_f32KoftaFeat[RMS_IDX+6]);
+	//	Local_f32KoftaNorm[MEAN_IDX+6] = NORM_f32_Mean(SNS2, Local_f32KoftaFeat[MEAN_IDX+6]);
+	//	Local_f32KoftaNorm[SSC_IDX+6]  = NORM_f32_SlopeSignChange(SNS2, Local_f32KoftaFeat[SSC_IDX+6]);
+	//	Local_f32KoftaNorm[ZC_IDX+6] = NORM_f32_ZeroCrossing(SNS2, Local_f32KoftaFeat[ZC_IDX+6]);
+	//	Local_f32KoftaNorm[WVL_IDX+6] = NORM_f32_WaveformLength(SNS2, Local_f32KoftaFeat[WVL_IDX+6]);
+	//
+	//
+	//	Local_f32KoftaNorm[VAR_IDX+12] = NORM_f32_Variance(SNS2, Local_f32KoftaFeat[VAR_IDX+12]);
+	//	Local_f32KoftaNorm[RMS_IDX+12] = NORM_f32_RMS(SNS3, Local_f32KoftaFeat[RMS_IDX+12]);
+	//	Local_f32KoftaNorm[MEAN_IDX+12] = NORM_f32_Mean(SNS3, Local_f32KoftaFeat[MEAN_IDX+12]);
+	//	Local_f32KoftaNorm[SSC_IDX+12]  = NORM_f32_SlopeSignChange(SNS3, Local_f32KoftaFeat[SSC_IDX+12]);
+	//	Local_f32KoftaNorm[ZC_IDX+12] = NORM_f32_ZeroCrossing(SNS3, Local_f32KoftaFeat[ZC_IDX+12]);
+	//	Local_f32KoftaNorm[WVL_IDX+12] = NORM_f32_WaveformLength(SNS3, Local_f32KoftaFeat[WVL_IDX+12]);
+	//
+	//	/*Movement 1 Data*/
+	//	in_data[RMS_IDX]  	= Local_f32KoftaNorm[RMS_IDX];
+	//	in_data[MEAN_IDX] 	= Local_f32KoftaNorm[MEAN_IDX];
+	//	in_data[VAR_IDX]  	= Local_f32KoftaNorm[VAR_IDX];
+	//	in_data[SSC_IDX] 	= Local_f32KoftaNorm[SSC_IDX];
+	//	in_data[ZC_IDX]   	= Local_f32KoftaNorm[ZC_IDX];
+	//	in_data[WVL_IDX]  	= Local_f32KoftaNorm[WVL_IDX];
+	//
+	//	in_data[RMS_IDX+6]  = Local_f32KoftaNorm[RMS_IDX+6];
+	//	in_data[VAR_IDX+6]  = Local_f32KoftaNorm[VAR_IDX+6];
+	//	in_data[MEAN_IDX+6] = Local_f32KoftaNorm[MEAN_IDX+6];
+	//	in_data[SSC_IDX+6] 	= Local_f32KoftaNorm[SSC_IDX+6];
+	//	in_data[ZC_IDX+6]   = Local_f32KoftaNorm[ZC_IDX+6];
+	//	in_data[WVL_IDX+6]  = Local_f32KoftaNorm[WVL_IDX+6];
+	//
+	//	in_data[RMS_IDX+12]  = Local_f32KoftaNorm[RMS_IDX+12];
+	//	in_data[VAR_IDX+12]  = Local_f32KoftaNorm[VAR_IDX+12];
+	//	in_data[MEAN_IDX+12] = Local_f32KoftaNorm[MEAN_IDX+12];
+	//	in_data[SSC_IDX+12]  = Local_f32KoftaNorm[SSC_IDX+12];
+	//	in_data[ZC_IDX+12]   = Local_f32KoftaNorm[ZC_IDX+12];
+	//	in_data[WVL_IDX+12]  = Local_f32KoftaNorm[WVL_IDX+12];
 
 
 
@@ -408,50 +415,63 @@ int main(void)
 	in_data[SSC_IDX+6] 	=  Norm_f32Arr[1][SSC_IDX];
 	in_data[ZC_IDX+6]   =  Norm_f32Arr[1][ZC_IDX];
 	in_data[WVL_IDX+6]  =  Norm_f32Arr[1][WVL_IDX];
-//
-//	in_data[RMS_IDX+12]  = Norm_f32Arr[2][RMS_IDX];
-//	in_data[VAR_IDX+12]  = Norm_f32Arr[2][VAR_IDX];
+	//
+	//	in_data[RMS_IDX+12]  = Norm_f32Arr[2][RMS_IDX];
+	//	in_data[VAR_IDX+12]  = Norm_f32Arr[2][VAR_IDX];
 
-//	in_data[MEAN_IDX+12] = Norm_f32Arr[2][MEAN_IDX];
-//	in_data[SSC_IDX+12]  = Norm_f32Arr[2][SSC_IDX];
-//	in_data[ZC_IDX+12]   = Norm_f32Arr[2][ZC_IDX];
-//	in_data[WVL_IDX+12]  = Norm_f32Arr[2][WVL_IDX];
+	//	in_data[MEAN_IDX+12] = Norm_f32Arr[2][MEAN_IDX];
+	//	in_data[SSC_IDX+12]  = Norm_f32Arr[2][SSC_IDX];
+	//	in_data[ZC_IDX+12]   = Norm_f32Arr[2][ZC_IDX];
+	//	in_data[WVL_IDX+12]  = Norm_f32Arr[2][WVL_IDX];
 
 	Model_Run(in_data, out_data);
-//
-//	Local_u8Max = 0;
-//	for(int i = 0 ;i < 5; i++)
-//	{
-//		if(out_data[i] > out_data[Local_u8Max])
-//		{
-//			Local_u8Max = i;
-//		}
-//	}
+	//
+	//	Local_u8Max = 0;
+	//	for(int i = 0 ;i < 5; i++)
+	//	{
+	//		if(out_data[i] > out_data[Local_u8Max])
+	//		{
+	//			Local_u8Max = i;
+	//		}
+	//	}
 
 
-  /* USER CODE END 2 */
+	/* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-    /* USER CODE END WHILE */
+		/* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+		/* USER CODE BEGIN 3 */
+		Servo_void_SetAngle(Servo1,90);
+		Servo_void_SetAngle(Servo2,90);
+		Servo_void_SetAngle(Servo3,90);
+		Servo_void_SetAngle(Servo4,90);
+		Servo_void_SetAngle(Servo5,90);
+		HAL_Delay(500);
+
+		Servo_void_SetAngle(Servo1,180);
+		Servo_void_SetAngle(Servo2,180);
+		Servo_void_SetAngle(Servo3,180);
+		Servo_void_SetAngle(Servo4,180);
+		Servo_void_SetAngle(Servo5,180);
+HAL_Delay(500);
 		for(Local_u32Counter = 0 ;Local_u32Counter < DATA_SIZE ;)
 		{
 
-			sensor1 =  analogRead(&hadc1);
-			sensor2 =  analogRead(&hadc2);
-//			sensor3 =  analogRead(&hadc3);
-//			if((sensor1 != 0) && (sensor2 != 0)/* && (sensor3 != 0)*/)
-//			{
+			sensor1 =  analogRead(&hadc2);
+			sensor2 =  analogRead(&hadc3);
+			//			sensor3 =  analogRead(&hadc3);
+			//			if((sensor1 != 0) && (sensor2 != 0)/* && (sensor3 != 0)*/)
+			//			{
 
-				Local_u32_RealData[SNS1][Local_u32Counter] = sensor1;
-				Local_u32_RealData[SNS2][Local_u32Counter] = sensor2;
-				Local_u32_RealData[SNS3][Local_u32Counter] = 0;
-				Local_u32Counter++;
-//			}
+			Local_u32_RealData[SNS1][Local_u32Counter] = sensor1;
+			Local_u32_RealData[SNS2][Local_u32Counter] = sensor2;
+			Local_u32_RealData[SNS3][Local_u32Counter] = 0;
+			Local_u32Counter++;
+			//			}
 
 			HAL_Delay(2);
 		}
@@ -472,13 +492,13 @@ int main(void)
 		in_data[SSC_IDX+6] 	=  Norm_f32Arr[1][SSC_IDX];
 		in_data[ZC_IDX+6]   =  Norm_f32Arr[1][ZC_IDX];
 		in_data[WVL_IDX+6]  =  Norm_f32Arr[1][WVL_IDX];
-//
-//		in_data[RMS_IDX+12]  = Norm_f32Arr[2][RMS_IDX];
-//		in_data[VAR_IDX+12]  = Norm_f32Arr[2][VAR_IDX];
-//		in_data[MEAN_IDX+12] = Norm_f32Arr[2][MEAN_IDX];
-//		in_data[SSC_IDX+12]  = Norm_f32Arr[2][SSC_IDX];
-//		in_data[ZC_IDX+12]   = Norm_f32Arr[2][ZC_IDX];
-//		in_data[WVL_IDX+12]  = Norm_f32Arr[2][WVL_IDX];
+		//
+		//		in_data[RMS_IDX+12]  = Norm_f32Arr[2][RMS_IDX];
+		//		in_data[VAR_IDX+12]  = Norm_f32Arr[2][VAR_IDX];
+		//		in_data[MEAN_IDX+12] = Norm_f32Arr[2][MEAN_IDX];
+		//		in_data[SSC_IDX+12]  = Norm_f32Arr[2][SSC_IDX];
+		//		in_data[ZC_IDX+12]   = Norm_f32Arr[2][ZC_IDX];
+		//		in_data[WVL_IDX+12]  = Norm_f32Arr[2][WVL_IDX];
 
 		Model_Run(in_data, out_data);
 		for(int i = 0 ;i < 4; i++)
@@ -494,47 +514,45 @@ int main(void)
 		Fest = out_data[2];
 		Rest = out_data[3];
 
-//		if(Local_u8Max == 0)
-//		{
-//			Gun = 100;
-//			Fest = 0;
-//			Two  = 0;
-//			Rest = 0;
-//		}
-//		else if(Local_u8Max == 1)
-//		{
-//			Fest = 0;
-//			Gun = 0;
-//			OK = 0;
-//			Good = 0;
-//			Two = 100;
-//			Rest = 0;
-//		}
-//
-//		else if (Local_u8Max == 2)
-//		{
-//			Fest = 100;
-//			Gun = 0;
-//			OK = 0;
-//			Two = 0;
-//			Rest = 0;
-//		}
-//		else if (Local_u8Max == 3)
-//		{
-//			Fest = 0;
-//			Gun  = 0;
-//			Two  = 0;
-//			Rest = 100;
-//
-//		}
-//		else if (Local_u8Max == 4)
-//		{
-//			Fest = 100;
-//			Gun = 0;
-//			OK = 0;
-//			Good = 0;
-//			Two = 0;
-//		}
+		if(Local_u8Max == 0)
+		{
+			//			Gun = 100;
+			//			Fest = 0;
+			//			Two  = 0;
+			//			Rest = 0;
+
+			two();
+		}
+		else if(Local_u8Max == 1)
+		{
+			//			Fest = 0;
+			//			Gun = 0;
+			//			OK = 0;
+			//			Good = 0;
+			//			Two = 100;
+			//			Rest = 0
+			ok();
+		}
+
+		else if (Local_u8Max == 2)
+		{
+			//			Fest = 100;
+			//			Gun = 0;
+			//			OK = 0;
+			//			Two = 0;
+			//			Rest = 0;
+			fest();
+		}
+		else if (Local_u8Max == 3)
+		{
+			//			Fest = 0;
+			//			Gun  = 0;
+			//			Two  = 0;
+			//			Rest = 100;
+
+			rest();
+		}
+
 
 		Mode = Local_u8Max;
 		HAL_Delay(500);
@@ -543,54 +561,54 @@ int main(void)
 
 	}
 
-  /* USER CODE END 3 */
+	/* USER CODE END 3 */
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+	/** Configure the main internal regulator output voltage
+	 */
+	__HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 90;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 2;
-  RCC_OscInitStruct.PLL.PLLR = 2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	/** Initializes the RCC Oscillators according to the specified parameters
+	 * in the RCC_OscInitTypeDef structure.
+	 */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+	RCC_OscInitStruct.PLL.PLLM = 8;
+	RCC_OscInitStruct.PLL.PLLN = 90;
+	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+	RCC_OscInitStruct.PLL.PLLQ = 2;
+	RCC_OscInitStruct.PLL.PLLR = 2;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+	{
+		Error_Handler();
+	}
 
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	/** Initializes the CPU, AHB and APB buses clocks
+	 */
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+			|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 /* USER CODE BEGIN 4 */
@@ -598,33 +616,33 @@ void SystemClock_Config(void)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
+	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
 	while (1)
 	{
 	}
-  /* USER CODE END Error_Handler_Debug */
+	/* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
+	/* USER CODE BEGIN 6 */
 	/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+	/* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

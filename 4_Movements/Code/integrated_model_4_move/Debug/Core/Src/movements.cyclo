@@ -1,0 +1,11 @@
+movements.c:10:6:init_servo	1
+movements.c:18:6:one	1
+movements.c:26:6:two	1
+movements.c:34:6:three	1
+movements.c:42:6:four	1
+movements.c:50:6:good	1
+movements.c:58:6:ok	1
+movements.c:66:6:fest	1
+movements.c:74:6:rest	1
+movements.c:82:6:five	1
+movements.c:90:6:gun	1

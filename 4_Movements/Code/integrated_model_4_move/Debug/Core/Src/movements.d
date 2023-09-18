@@ -1,4 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/movements.o: ../Core/Src/movements.c ../Core/Inc/movements.h \
+ ../Core/Inc/PWM.h ../Core/Inc/tim.h ../Core/Inc/main.h \
  C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -31,16 +32,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/crc.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../Core/Inc/gpio.h ../Core/Inc/PWM.h \
- ../Core/Inc/tim.h ../Core/Inc/MAPPING.h ../Core/Inc/servo.h \
- ../Core/Inc/FEAT_EXT.h ../Core/Inc/NORM_interface.h \
- ../Core/Inc/sensor_readings.h ../Core/Inc/adc.h ../Core/Inc/usart.h \
- ../X-CUBE-AI/App/app_x-cube-ai.h ../Middlewares/ST/AI/Inc/ai_platform.h \
- ../X-CUBE-AI/App/network.h ../X-CUBE-AI/App/network_config.h \
- ../X-CUBE-AI/App/network_data.h ../X-CUBE-AI/App/network_data_params.h \
- ../Core/Inc/movements.h ../Core/Inc/PWM.h ../Core/Inc/MAPPING.h \
- ../Core/Inc/servo.h
+ ../Core/Inc/MAPPING.h ../Core/Inc/servo.h
+../Core/Inc/movements.h:
+../Core/Inc/PWM.h:
+../Core/Inc/tim.h:
 ../Core/Inc/main.h:
 C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -74,28 +69,5 @@ C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32
 C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 C:/Users/Hanin\ Anwar/STM32Cube/Repository/STM32Cube_FW_F4_V1.27.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../Core/Inc/adc.h:
-../Core/Inc/main.h:
-../Core/Inc/crc.h:
-../Core/Inc/tim.h:
-../Core/Inc/usart.h:
-../Core/Inc/gpio.h:
-../Core/Inc/PWM.h:
-../Core/Inc/tim.h:
-../Core/Inc/MAPPING.h:
-../Core/Inc/servo.h:
-../Core/Inc/FEAT_EXT.h:
-../Core/Inc/NORM_interface.h:
-../Core/Inc/sensor_readings.h:
-../Core/Inc/adc.h:
-../Core/Inc/usart.h:
-../X-CUBE-AI/App/app_x-cube-ai.h:
-../Middlewares/ST/AI/Inc/ai_platform.h:
-../X-CUBE-AI/App/network.h:
-../X-CUBE-AI/App/network_config.h:
-../X-CUBE-AI/App/network_data.h:
-../X-CUBE-AI/App/network_data_params.h:
-../Core/Inc/movements.h:
-../Core/Inc/PWM.h:
 ../Core/Inc/MAPPING.h:
 ../Core/Inc/servo.h:

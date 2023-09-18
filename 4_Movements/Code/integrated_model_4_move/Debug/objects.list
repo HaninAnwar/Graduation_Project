@@ -6,6 +6,7 @@
 "./Core/Src/crc.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"
+"./Core/Src/movements.o"
 "./Core/Src/sensor_readings.o"
 "./Core/Src/servo.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
